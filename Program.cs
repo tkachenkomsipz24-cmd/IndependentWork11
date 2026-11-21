@@ -6,8 +6,8 @@ namespace IndependentWork11;
 
 public static class Program
 {
-    private const int Seed = 42;     // фіксований Seed: дані однакові при кожному запуску
-    private const int Repeats = 1000; // кількість повторів для усередненого часу
+    private const int Seed = 42; 
+    private const int Repeats = 1000;
 
     public static void Main()
     {
@@ -21,7 +21,6 @@ public static class Program
         Console.WriteLine("=== Самостійна робота №17: LINQ-пайплайни (сценарій «Продажі») ===");
         Console.WriteLine($"Продуктів: {products.Count}, клієнтів: {customers.Count}, продажів: {sales.Count}");
 
-        // Пайплайн 1
         var (top, topFirst, topAvg) = Measure(() => Pipelines.TopProductsByCategory(sales, products));
         PrintHeader("Пайплайн 1: найпопулярніші продукти за категоріями (топ-3)");
         foreach (var category in top)
@@ -34,7 +33,6 @@ public static class Program
         }
         PrintTime(topFirst, topAvg);
 
-        // Пайплайн 2
         var (byCity, cityFirst, cityAvg) = Measure(() => Pipelines.RevenueByCity(sales, products, customers));
         PrintHeader("Пайплайн 2: загальний дохід за містами клієнтів (за спаданням)");
         foreach (var row in byCity)
@@ -43,7 +41,6 @@ public static class Program
         }
         PrintTime(cityFirst, cityAvg);
 
-        // Пайплайн 3
         var (byMonth, monthFirst, monthAvg) = Measure(() => Pipelines.SalesByMonth(sales, products));
         PrintHeader("Пайплайн 3: продажі за роками та місяцями");
         foreach (var row in byMonth)
@@ -52,7 +49,6 @@ public static class Program
         }
         PrintTime(monthFirst, monthAvg);
 
-        // Пайплайн 4 (додатковий)
         var (topCustomers, custFirst, custAvg) = Measure(() => Pipelines.TopCustomers(sales, products, customers));
         PrintHeader("Пайплайн 4 (додатковий): топ-5 клієнтів за сумою покупок");
         for (int i = 0; i < topCustomers.Count; i++)
@@ -63,10 +59,6 @@ public static class Program
         PrintTime(custFirst, custAvg);
     }
 
-    /// <summary>
-    /// Вимірює час пайплайну. Для кожного пайплайну створюються НОВІ Stopwatch.
-    /// Перший запуск включає JIT-компіляцію, а середній час рахується за Repeats повторів.
-    /// </summary>
     private static (T Result, double FirstMs, double AvgMs) Measure<T>(Func<T> pipeline)
     {
         var firstWatch = Stopwatch.StartNew();

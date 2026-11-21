@@ -1,10 +1,5 @@
 namespace IndependentWork11;
 
-/// <summary>
-/// Псевдовипадкова генерація тестових даних із фіксованим Seed,
-/// щоб результати можна було відтворити повторно.
-/// Обсяги: 60 продуктів (5 категорій по 12), 50 клієнтів, 100 продажів.
-/// </summary>
 public static class DataGenerator
 {
     private static readonly string[] Categories =
@@ -22,7 +17,6 @@ public static class DataGenerator
         {
             for (int i = 1; i <= perCategory; i++)
             {
-                // Ціна від 10.00 до 500.00
                 decimal price = rnd.Next(1000, 50001) / 100m;
                 products.Add(new Product(id, $"{category} #{i}", category, price));
                 id++;
@@ -56,7 +50,7 @@ public static class DataGenerator
             int productId = products[rnd.Next(products.Count)].Id;
             int customerId = customers[rnd.Next(customers.Count)].Id;
             int quantity = rnd.Next(1, 11);
-            DateTime date = start.AddDays(rnd.Next(0, 731)); // 2024-01-01 .. 2025-12-31
+            DateTime date = start.AddDays(rnd.Next(0, 731));
 
             sales.Add(new Sale(id, productId, quantity, date, customerId));
         }

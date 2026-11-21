@@ -1,17 +1,10 @@
 namespace IndependentWork11;
 
-// ---------- Сутності сценарію «Продажі» ----------
-
-/// <summary>Продукт: Id, Name, Category, UnitPrice.</summary>
 public record Product(int Id, string Name, string Category, decimal UnitPrice);
 
-/// <summary>Клієнт: Id, Name, City.</summary>
 public record Customer(int Id, string Name, string City);
 
-/// <summary>Продаж: Id, ProductId, Quantity, SaleDate, CustomerId.</summary>
 public record Sale(int Id, int ProductId, int Quantity, DateTime SaleDate, int CustomerId);
-
-// ---------- Типи результатів пайплайнів ----------
 
 public record ProductQuantity(string Name, int Quantity);
 

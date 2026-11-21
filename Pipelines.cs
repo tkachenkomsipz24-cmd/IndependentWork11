@@ -1,16 +1,7 @@
 namespace IndependentWork11;
 
-/// <summary>
-/// LINQ-пайплайни для сценарію «Продажі». Кожен пайплайн виконується повністю
-/// (завершується ToList), тому вимірювання часу охоплює реальну обробку даних.
-/// </summary>
 public static class Pipelines
 {
-    /// <summary>
-    /// Пайплайн 1. Найпопулярніші продукти за категоріями.
-    /// GroupBy (за продуктом) -> Sum -> Join (з продуктами) -> GroupBy (за категорією)
-    /// -> OrderByDescending + Take(3) всередині кожної категорії.
-    /// </summary>
     public static List<CategoryTop> TopProductsByCategory(
         IEnumerable<Sale> sales, IEnumerable<Product> products, int topN = 3)
     {
@@ -25,7 +16,7 @@ public static class Pipelines
             .Select(g => new CategoryTop(
                 g.Key,
                 g.OrderByDescending(x => x.TotalQuantity)
-                 .ThenBy(x => x.Id) // однозначний порядок при однаковій кількості
+                 .ThenBy(x => x.Id) 
                  .Take(topN)
                  .Select(x => new ProductQuantity(x.Name, x.TotalQuantity))
                  .ToList()))
@@ -33,11 +24,6 @@ public static class Pipelines
             .ToList();
     }
 
-    /// <summary>
-    /// Пайплайн 2. Загальний дохід за містами клієнтів.
-    /// Join (продажі + продукти) -> Join (+ клієнти) -> GroupBy (за містом)
-    /// -> Sum -> OrderByDescending.
-    /// </summary>
     public static List<CityRevenue> RevenueByCity(
         IEnumerable<Sale> sales, IEnumerable<Product> products, IEnumerable<Customer> customers)
     {
@@ -56,11 +42,6 @@ public static class Pipelines
             .ToList();
     }
 
-    /// <summary>
-    /// Пайплайн 3. Продажі за місяцями та роками.
-    /// Join (продажі + продукти) -> GroupBy (рік, місяць) -> Sum (одиниці, дохід)
-    /// -> OrderBy (рік) -> ThenBy (місяць).
-    /// </summary>
     public static List<MonthSales> SalesByMonth(
         IEnumerable<Sale> sales, IEnumerable<Product> products)
     {
@@ -86,11 +67,6 @@ public static class Pipelines
             .ToList();
     }
 
-    /// <summary>
-    /// Пайплайн 4 (додатковий). Топ клієнтів за сумою покупок.
-    /// Join -> GroupBy (за клієнтом) -> Sum -> Join (з клієнтами)
-    /// -> OrderByDescending -> Take.
-    /// </summary>
     public static List<CustomerSpend> TopCustomers(
         IEnumerable<Sale> sales, IEnumerable<Product> products, IEnumerable<Customer> customers, int count = 5)
     {
